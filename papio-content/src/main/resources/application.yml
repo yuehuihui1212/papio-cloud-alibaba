@@ -1,0 +1,75 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: content-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:10010
+    stream:
+      rocketmq:
+        binder:
+          name-server: 127.0.0.1:9876
+        bindings:
+          output:
+            producer:
+              transactional: true
+              group: tx-add-bonus
+      bindings:
+        output:
+          destination: add-bonus
+        my-output:
+          destination: stream-customize-topic
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/content_center?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    hikari:
+      username: root
+      password: 1212
+      driver-class-name: com.mysql.cj.jdbc.Driver
+user-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.papio.contentcenter.config.nacos.NacosWeightedRule
+feign:
+  client:
+    config:
+      #想要指定某个服务的feign日志级别时，可以用户服务名称+级别，如果过使用全局的将服务名称改为 default
+      user-service:
+        connectionTimeout: 5000 #连接超时时间
+        readTimeout: 5000 #读取超时时间
+        loggerLevel: BASIC  #日志级别
+  httpclient:  #feign性能优化：1.设置连接池 2.设置合理的日志级别 BASIC
+    enabled: true
+    #最大连接数
+    max-connections: 200
+    #单个路径的最大连接数
+    max-connections-per-route: 50
+  #feign整合sentinel
+  sentinel:
+    enabled: true
+#        errorDecoder: com.example.SimpleErrorDecoder #错误解码器
+#        retryer: com.example.SimpleRetryer #重试策略
+#        requestInterceptors:
+#          - com.example.FooRequestInterceptor #拦截器
+#        decode404: false
+#        encoder: com.example.SimplerEncoder #编码器
+#        decoder: com.example.SimpleDecoder  #解码器
+#        contract: com.example.SimpleContract #契约
+
+
+logging:
+  level:
+    com.papio.contentcenter.feignclient.UserFeignClient: debug
+ #ribbon配置饥饿加载，解决ribbon和feign整合hystrix时，第一次请求失败的问题
+ribbon:
+  eager-load:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+
+        include: '*'

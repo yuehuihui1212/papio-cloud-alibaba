@@ -1,0 +1,31 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    stream:
+      rocketmq:
+        binder:
+          name-server: 127.0.0.1:9876
+      bindings:
+        input:
+          destination: add-bonus
+          group: binder-group
+        my-input:
+          destination: stream-customize-topic
+          group: my-group
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/user_center?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1212
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+wx:
+  appid: wxe3dfb6eaa1347630
+  secret: c3cbc166370893c936d19d4b859f6d69
