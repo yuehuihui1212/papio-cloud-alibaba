@@ -9,9 +9,11 @@ import com.papio.usercenter.domain.dto.user.UserRespDTO;
 import com.papio.usercenter.domain.entity.user.SysUser;
 import com.papio.usercenter.service.UserService;
 import com.papio.utils.JwtOperator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +29,14 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("user")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@EnableConfigurationProperties(JwtOperator.class)
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private WxMaService wxMaService;
+    private final WxMaService wxMaService;
 
-    @Autowired
-    private JwtOperator jwtOperator;
+    private final JwtOperator jwtOperator;
 
     @GetMapping("findUserById/{id}")
     public ResponseEntity findUserById(@PathVariable Integer id) {
@@ -54,7 +55,7 @@ public class UserController {
      * @return
      */
     @PostMapping("login")
-    public ResponseEntity login(UserLoginDTO userLoginDTO) {
+    public ResponseEntity login(@RequestBody UserLoginDTO userLoginDTO) {
         try {
             WxMaJscode2SessionResult resuult = this.wxMaService.getUserService()
                     .getSessionInfo(userLoginDTO.getCode());
@@ -90,6 +91,6 @@ public class UserController {
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
-        return null;
+        return ResponseEntity.ok().build();
     }
 }

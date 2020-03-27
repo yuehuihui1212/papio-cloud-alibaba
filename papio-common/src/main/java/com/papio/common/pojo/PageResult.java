@@ -1,6 +1,8 @@
 package com.papio.common.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  * @Modified By:
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PageResult<T>{
     /**
      * 总条数
@@ -26,9 +30,4 @@ public class PageResult<T>{
      * 当前页数据
      */
     private List<T> items;
-
-    public PageResult(long total, List<T> list) {
-        this.total=total;
-        this.items=list;
-    }
 }

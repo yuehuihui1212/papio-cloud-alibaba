@@ -13,7 +13,6 @@
         <module>papio-user</module>
         <module>papio-content</module>
         <module>papio-common</module>
-        <module>papio-gateway</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

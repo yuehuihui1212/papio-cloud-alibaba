@@ -29,3 +29,6 @@ spring:
 wx:
   appid: wxe3dfb6eaa1347630
   secret: c3cbc166370893c936d19d4b859f6d69
+jwt:
+  secret: aaabbbcccdddeeefffggghhhiiijjjkkklllmmmnnnooopppqqqrrrsssttt
+  expire-time-in-second: 1209600

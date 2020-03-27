@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public enum ExceptionEnum {
-    ;
+    TOKEN_NOT_VALID(401,"token不合法");
     private int code;
     private String msg;
 }
